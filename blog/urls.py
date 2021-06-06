@@ -18,11 +18,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from main import views
+# from main import views
+from main.views import PostsListView, IndexPageView, PostDetailsView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index_page, name='index-page'),  #путь на странице
+    path('', IndexPageView.as_view(), name='index-page'),  #путь на страницу
+    path('posts/<slug:category>/',
+         PostsListView.as_view(),
+         name='posts-list'),
+    path('post//<int:pk>/', PostDetailsView.as_view(),
+         name='post-details')
 ]
 
 if settings.DEBUG:
