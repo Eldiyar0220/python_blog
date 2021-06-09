@@ -11,22 +11,21 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-#@+k49^gac44ekt*u9l98u#cnudr5%p-o9t&^q8%*qzxc=h3rlk
+# @+k49^gac44ekt*u9l98u#cnudr5%p-o9t&^q8%*qzxc=h3rlk
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'm7b!&_*0t9fd#nj&_*_@2bc3+(!s0bxv1i2@rx02+9^ywg=md^'
-SECRET_KEY = '@+k49^gac44ekt*u9l98u#cnudr5%p-o9t&^q8%*qzxc=h3rlk'
+SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 # Application definition
 
@@ -39,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'ckeditor',
-    
+
     # mys
     'account',
     'main',
@@ -75,21 +74,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blog.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog3',
-        'USER': 'eldiyar',
-        'PASSWORD': '197119962002',
-        'HOST': 'localhost',
-        'PORT': 5432
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', cast=int)
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -124,7 +121,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -133,3 +129,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/main/'
 MADIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'index-page'
+LOGOUT_URL = 'logout'
